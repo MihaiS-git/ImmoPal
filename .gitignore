@@ -1,0 +1,59 @@
+**/target
+**/classes
+**/bin
+**/*.log
+**/dist
+**/node_modules
+
+# Eclipse
+.classpath
+.project
+.settings
+.metadata
+
+# IntelliJ IDEA
+*.iml
+*.ipr
+*.iws
+.idea
+build
+out
+generated
+MANIFEST.MF
+
+# Gradle
+.gradle
+
+#angular
+node_modules
+.angular
+rentals-web/src/main/webapp/.angular
+
+
+# Angular CLI generated files
+**/dist
+**/.ng
+**/.vscode
+**/*.js
+**/*.js.map
+*.esm5
+*.esm2015
+*.closure
+*.closure.js
+*.closure.js.map
+*.ngfactory.ts
+*.ngstyle.ts
+
+
+# Credentials
+StoredCredential
+credentials.json
+application-secrets.properties
+
+# Logs
+*.log
+*.gz
+*.tmp
+
+# env files
+*.env
