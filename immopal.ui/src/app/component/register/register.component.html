@@ -1,0 +1,132 @@
+<div class="container col-12 col-sm-10 col-md-6 col-lg-5 col-xl-4 col-xxl-3 bg-info-subtle text-dark mt-5 mb-5 rounded">
+  <h2 class="h2">Register</h2>
+  <form [formGroup]="registerForm" class="bg-info-subtle text-dark" (ngSubmit)="register()">
+    <fieldset>
+
+      <!-- First Name -->
+      <div class="mb-3">
+        <label class="form-label" for="firstName">First Name</label>
+        <input class="form-control form-control-sm" type="text" id="firstName" formControlName="firstName"
+          placeholder="First Name" [ngClass]="{'has-success': registerForm.get('firstName').valid}" required>
+        <div
+          *ngIf="registerForm.get('firstName').invalid && (registerForm.get('firstName').dirty || registerForm.get('firstName').touched)"
+          class="text-danger">
+          <div *ngIf="registerForm.get('firstName').errors?.required">
+            <small>First Name is required.</small>
+          </div>
+          <div *ngIf="registerForm.get('firstName').errors?.minlength">
+            <small>First Name must have at least 2 characters.</small>
+          </div>
+        </div>
+      </div>
+
+      <!-- Last Name -->
+      <div class="mb-3">
+        <label class="form-label" for="lastName">Last Name</label>
+        <input class="form-control form-control-sm" type="text" id="lastName" formControlName="lastName"
+          placeholder="Last Name" [ngClass]="{'has-success': registerForm.get('lastName').valid}" required>
+        <div
+          *ngIf="registerForm.get('lastName').invalid && (registerForm.get('lastName').dirty || registerForm.get('lastName').touched)"
+          class="text-danger">
+          <div *ngIf="registerForm.get('lastName').errors?.required">
+            <small>Last Name is required.</small>
+          </div>
+          <div *ngIf="registerForm.get('lastName').errors?.minlength">
+            <small>Last Name must have at least 2 characters.</small>
+          </div>
+        </div>
+      </div>
+
+      <!-- Email -->
+      <div class="mb-3">
+        <label class="form-label" for="email">Email</label>
+        <input class="form-control form-control-sm" type="email" id="email" formControlName="email" placeholder="Email"
+        [ngClass]="{'has-success': registerForm.get('email').valid}" required>
+        <div
+          *ngIf="registerForm.get('email').invalid && (registerForm.get('email').dirty || registerForm.get('email').touched)"
+          class="text-danger">
+          <div *ngIf="registerForm.get('email').errors?.required"><small>Email is required.</small></div>
+          <div *ngIf="registerForm.get('email').errors?.pattern"><small>Invalid email format.</small></div>
+        </div>
+      </div>
+
+      <!-- Password -->
+      <div class="mb-3">
+        <label class="form-label" for="password">Password</label>
+        <input class="form-control form-control-sm" type="password" id="password" formControlName="password"
+        [ngClass]="{'has-success': registerForm.get('password').valid}" placeholder="Password" required>
+        <div
+          *ngIf="registerForm.get('password').invalid && (registerForm.get('password').dirty || registerForm.get('password').touched)"
+          class="text-danger">
+          <div *ngIf="registerForm.get('password').errors?.required"><small>Password is required.</small></div>
+          <div *ngIf="registerForm.get('password').errors?.pattern"><small>Password must contain at least one letter
+              and one number.</small></div>
+          <div *ngIf="registerForm.get('password').errors?.minlength"><small>Password must be at least 8 characters
+              long.</small></div>
+        </div>
+      </div>
+
+      <!-- Phone Number -->
+      <div class="mb-3">
+        <label class="form-label" for="phoneNumber">Phone Number</label>
+        <input class="form-control form-control-sm" type="text" id="phoneNumber" formControlName="phoneNumber"
+        [ngClass]="{'has-success': registerForm.get('phoneNumber').valid}" placeholder="Phone Number" required>
+        <div
+          *ngIf="registerForm.get('phoneNumber').invalid && (registerForm.get('phoneNumber').dirty || registerForm.get('phoneNumber').touched)"
+          class="text-danger">
+          <div *ngIf="registerForm.get('phoneNumber').errors?.required">
+            <small>Phone Number is required.</small>
+          </div>
+          <div *ngIf="registerForm.get('phoneNumber').errors?.minlength">
+            <small>Phone Number must be at least 10 digits long.</small>
+          </div>
+          <div *ngIf="registerForm.get('phoneNumber').errors?.pattern">
+            <small>Invalid Phone Number format.</small>
+          </div>
+        </div>
+      </div>
+
+      <!-- Date Of Birth -->
+      <div class="mb-3">
+        <label class="form-label" for="dateOfBirth">Date Of Birth</label>
+        <input class="form-control form-control-sm" type="date" id="dateOfBirth" formControlName="dateOfBirth" [ngClass]="{'has-success': registerForm.get('dateOfBirth').valid}" required>
+        <div
+          *ngIf="registerForm.get('dateOfBirth').invalid && (registerForm.get('dateOfBirth').dirty || registerForm.get('dateOfBirth').touched)"
+          class="text-danger">
+          <div *ngIf="registerForm.get('dateOfBirth').errors.required">
+            <small>Date Of Birth is required.</small>
+          </div>
+        </div>
+      </div>
+
+      <!-- Address -->
+      <div class="mb-3">
+        <label class="form-label" for="address">Address</label>
+        <input class="form-control form-control-sm" type="text" id="address" formControlName="address"
+        [ngClass]="{'has-success': registerForm.get('address').valid}" placeholder="Address" required>
+        <div
+          *ngIf="registerForm.get('address').invalid && (registerForm.get('address').dirty || registerForm.get('address').touched)"
+          class="text-danger">
+          <div *ngIf="registerForm.get('address').errors.required">
+            <small>Address is required.</small>
+          </div>
+        </div>
+      </div>
+
+      <!-- Register Form buttons -->
+      <div class="form-actions d-flex justify-content-between align-items-center mt-5 mb-3">
+        <button class="btn btn-outline-dark mb-3 ms-3" type="submit" id="register" [disabled]="!registerForm.valid">Register</button>
+        <span class="close-button me-3" (click)="close()">
+          <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-x-square"
+            viewBox="0 0 16 16">
+            <path
+              d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2z" />
+            <path
+              d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708" />
+          </svg>
+        </span>
+      </div>
+    </fieldset>
+  </form>
+
+</div>

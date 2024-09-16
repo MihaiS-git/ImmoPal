@@ -1,0 +1,48 @@
+<div class="container mt-4">
+  <div class="row d-flex justify-content-center">
+    <div class="card contacts_card mt-5 col-8">
+      <div class="card-header mt-4">
+        <button id="close_menu_btn" class="btn btn-close btn-close-white" routerLink="/home"></button>
+        <div class="input-group mt-3">
+          <input type="text" placeholder="Search..." class="form-control search" [(ngModel)]="searchText">
+          <div class="input-group-append">
+            <span class="input-group-text search_btn"><i class="fas fa-search" (click)="searchUser()"></i></span>
+          </div>
+        </div>
+      </div>
+      <div class="card-body contacts_body">
+        <ul class="contacts">
+          <div *ngIf="chatUsers.length === 0">
+            <p class="text-light ms-5">No chat users available.</p>
+          </div>
+          <li *ngFor="let chatUser of chatUsers" (click)="openChat(chatUser)">
+            <div *ngIf="chatUser.email != this.user.email" class="d-flex bd-highlight">
+              <div class="img_cont">
+                <!-- picture -->
+                <div *ngIf="chatUser?.pictureUrl; else defaultIcon">
+                  <img [src]="chatUser?.pictureUrl" alt="portret" class="rounded-circle user_img">
+                </div>
+                <!-- status -->
+                <span *ngIf="chatUser.status === 'OFFLINE'" class="offline_icon"></span>
+                <span *ngIf="chatUser.status === 'ONLINE'" class="online_icon"></span>
+                <!-- counter -->
+                <span *ngIf="this.unreadCounts[chatUser.email] > 0" class="badge badge-danger unread_count">
+                  {{ this.unreadCounts[chatUser.email] }}
+                </span>
+                <ng-template #defaultIcon>
+                  <img src="/user/user_icon.png" alt="portret" class="rounded-circle user_img">
+                </ng-template>
+
+              </div>
+              <div class="user_info">
+                <span>{{ chatUser.fullName }}</span>
+                <p *ngIf="chatUser.status === 'ONLINE'">{{ chatUser?.fullName }} is online</p>
+                <p *ngIf="chatUser.status === 'OFFLINE'">{{ chatUser?.fullName }} is offline </p>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,22 @@
+.container-fluid {
+  height: 100vh;
+}
+
+.row {
+  height: 100%;
+}
+
+.chat-list-container {
+  height: 39%;
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+.chat-room-container {
+  height: 59%;
+}
+
+@media (max-width: 768px) {
+  .col-md-4, .col-md-8 {
+    padding: 0;
+  }
+}

@@ -1,0 +1,6 @@
+<div class="row justify-content-center mt-5">
+  <div class="col-lg-12 d-flex flex-wrap justify-content-center">
+    <app-agency-property-detail *ngFor="let propertyEl of properties; let i = index" [property]="propertyEl"
+      [index]="i" (click)="navigateToProperty(propertyEl.id)"></app-agency-property-detail>
+  </div>
+</div>

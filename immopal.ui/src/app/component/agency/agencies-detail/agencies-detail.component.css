@@ -1,0 +1,20 @@
+button {
+  background-color: #6599ac;
+  min-width: 200px;
+  color:#ffffff;
+  font-size: larger;
+  border: none;
+  padding: 10px 20px;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.75);
+}
+
+button:hover {
+  background-color: #2a5f73;
+  color: #ffffff;
+  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.75);
+}
+
+.shadowIcon{
+  box-shadow: 0 8px 20px rgba(0, 0.5, 1, 1.75);
+}

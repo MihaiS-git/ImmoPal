@@ -1,0 +1,89 @@
+<nav class="navbar navbar-expand-lg bg-info-subtle fixed-top">
+  <div class="container">
+    <a routerLink="/" class="navbar-brand ms-3">
+      <img src="/logo/logo.png" alt="logo" style="height: 64px;">
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ms-3 me-auto mb-3 mb-lg-0">
+        <li class="nav-item">
+          <a id="agencies" class="nav-link active" aria-current="page" routerLink="/agencies" data-bs-toggle="collapse"
+            data-bs-target=".navbar-collapse.show">Agencies</a>
+        </li>
+        <li class="nav-item dropdown">
+          <a id="properties" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+            aria-expanded="false">
+            Properties
+          </a>
+          <ul class="dropdown-menu" style="background-color: #b1dcf9;">
+            <li><a id="sale" class="dropdown-item" routerLink="/properties/sale" data-bs-toggle="collapse"
+                data-bs-target=".navbar-collapse.show">Sale</a></li>
+            <li><a id="rent" class="dropdown-item" routerLink="/properties/rent" data-bs-toggle="collapse"
+                data-bs-target=".navbar-collapse.show">Rent</a></li>
+          </ul>
+        </li>
+        <li class="nav-item" *ngIf="isLoggedIn">
+          <a id="auctions" class="nav-link" aria-current="page" routerLink="/auctions" data-bs-toggle="collapse"
+            data-bs-target=".navbar-collapse.show">Auctions</a>
+        </li>
+        <li class="nav-item" *ngIf="isLoggedIn">
+          <a id="chat" class="nav-link" aria-current="page" [routerLink]="['/chat', user?.email]" data-bs-toggle="collapse"
+            data-bs-target=".navbar-collapse.show">Chat</a>
+        </li>
+        <li class="nav-item" *ngIf="isLoggedIn && user.role=='ADMIN'">
+          <a id="dashboard" class="nav-link" aria-current="page" routerLink="/admin" data-bs-toggle="collapse"
+            data-bs-target=".navbar-collapse.show">Dashboard</a>
+        </li>
+      </ul>
+
+      <div class="nav-item dropdown" *ngIf="!isLoggedIn">
+        <a id="authenticate" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+          aria-expanded="false">
+          Authenticate
+        </a>
+        <ul class="dropdown-menu" style="background-color: #b1dcf9;">
+          <li><a id="register" class="dropdown-item" routerLink="/register" data-bs-toggle="collapse"
+              data-bs-target=".navbar-collapse.show">Register</a></li>
+          <li><a id="login" class="dropdown-item" routerLink="/auth" data-bs-toggle="collapse"
+              data-bs-target=".navbar-collapse.show">Login</a></li>
+        </ul>
+      </div>
+    </div>
+    <div id="authenticationTab" class="dropdown text-end" *ngIf="isLoggedIn">
+
+      <app-chat-notification></app-chat-notification>
+      
+      <a href="#" class="d-block link-body-emphasis text-decoration-none dropdown-toggle" data-bs-toggle="dropdown"
+        aria-expanded="false">
+        <div *ngIf="person?.pictureUrl; else defaultIcon">
+          <img [src]="person?.pictureUrl" alt="user icon" width="70" height="70" class="rounded-circle">
+        </div>
+        <ng-template #defaultIcon>
+          <img src="/user/user_icon.png" alt="user icon" width="70" height="70" class="rounded-circle">
+        </ng-template>
+        <ul class="dropdown-menu text-small shadow"
+          style="position: absolute; inset: 0px 0px auto auto; margin: 0px; transform: translate3d(0px, 34px, 0px); background-color: #b1dcf9;"
+          data-popper-placement="bottom-end">
+          <li>
+            <a routerLink="/account" class="dropdown-item" data-bs-toggle="collapse"
+              data-bs-target=".navbar-collapse.show">Account</a>
+          </li>
+          <li>
+            <a routerLink="/auctions/favourites" class="dropdown-item" data-bs-toggle="collapse"
+              data-bs-target=".navbar-collapse.show">Favourites</a>
+          </li>
+          <li>
+            <hr class="dropdown-divider">
+          </li>
+          <li class="nav-item">
+            <a href="/home" class="dropdown-item" (click)="logout()" data-bs-toggle="collapse"
+              data-bs-target=".navbar-collapse.show">Sign out</a>
+          </li>
+        </ul>
+      </a>
+    </div>
+  </div>
+</nav>

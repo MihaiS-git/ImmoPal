@@ -1,0 +1,52 @@
+<div class="container-fluid">
+  <div class="row bg-info-subtle text-dark text-center mb-2 rounded">
+    <div class="col">
+      <div class="table-responsive" *ngIf="appointmentItem">
+        <table class="table table-dark">
+          <thead>
+            <tr>
+              <th class="bg-info-subtle text-dark" width="20%" scope="col">Property</th>
+              <th class="bg-info-subtle text-dark" width="20%" scope="col">Address</th>
+              <th class="bg-info-subtle text-dark" width="20%" scope="col">Start Bid($)</th>
+              <th class="bg-info-subtle text-dark" width="20%" scope="col">Link</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="bg-info-subtle text-dark">
+                {{appointmentItem.propertyCategory}} <br> for <br> {{appointmentItem.transactionType}}
+              </td>
+              <td class="bg-info-subtle text-dark">
+                {{appointmentItem.address.city}} <br> {{appointmentItem.address.country}}
+              </td>
+              <td class="bg-info-subtle text-dark">
+                {{appointmentItem.price | currency}}
+              </td>
+              <td class="bg-info-subtle text-dark">
+                <a [routerLink]="['/properties', appointmentItem.id]">Property #{{appointmentItem.id}}</a>
+              </td>
+            </tr>
+
+            <tr>
+              <td colspan="4" class="bg-info-subtle text-dark">
+                Select Date: <input id="startDate" type="datetime-local" [(ngModel)]="startDate">
+              </td>
+            </tr>
+
+            <tr>
+              <td colspan="2" class="bg-info-subtle text-dark">
+                <button class="btn btn-outline-dark" (click)="book()" [disabled]="!startDate || user.role=='AGENT'">Book</button>
+              </td>
+              <td colspan="2" class="bg-info-subtle text-dark">
+                <button class="btn btn-outline-danger" (click)="close()">Exit</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div *ngIf="!appointmentItem" class="alert col-md-12" role="alert">
+        <p>No Property selected</p>
+      </div>
+    </div>
+  </div>
+</div>

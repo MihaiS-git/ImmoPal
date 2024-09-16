@@ -1,0 +1,14 @@
+.no-underline {
+  text-decoration: none;
+  color: inherit;
+}
+
+.shadow-card {
+  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5);
+}
+
+.card {
+  background-color: #6599ac;
+  color: #ffffff;
+}
+

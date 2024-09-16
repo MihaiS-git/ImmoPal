@@ -1,0 +1,249 @@
+<div class="container mt-5 mb-5">
+  <div class="row justify-content-center mt-3">
+    <div class="col col-md-8 mb-3">
+      <div class="text-dark">
+        <div class="accordion" id="accordionAccount">
+          <!-- Personal Data Accordion -->
+          <div class="accordion-item">
+            <h2 class="accordion-header">
+              <button class="accordion-button bg-info-subtle" type="button" data-bs-toggle="collapse"
+                data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                <strong>Personal Data</strong>
+              </button>
+            </h2>
+            <div id="collapseOne" class="accordion-collapse collapse show" data-bs-parent="#accordionAccount">
+              <div class="accordion-body">
+                <div class="container">
+                  <div class="row justify-content-center">
+                    <div class="col-md-4 text-center">
+                      <div *ngIf="person?.pictureUrl; else defaultIcon">
+                        <img [src]="person?.pictureUrl" alt="portret" class="img-fluid mb-3" style="width: 250px;">
+                      </div>
+                      <ng-template #defaultIcon>
+                        <img src="/user/user_icon.png" alt="portret" class="img-fluid mb-3" style="width: 250px;">
+                      </ng-template>
+                    </div>
+                    <div class="col-md-8">
+                      <div class="row">
+                        <div class="col">
+                          <p><strong>Person ID:</strong> {{ person?.id }}</p>
+                          <p><strong>First Name:</strong> {{ person?.firstName }}</p>
+                          <p><strong>Last Name:</strong> {{ person?.lastName }}</p>
+                          <p><strong>Role:</strong> {{ user?.role }}</p>
+                        </div>
+                        <div class="col">
+                          <p><strong>Phone Number:</strong> {{ person?.phoneNumber }}</p>
+                          <p><strong>Date Of Birth:</strong> {{ person?.dateOfBirth }}</p>
+                          <p><strong>Address:</strong> {{ person?.address }}</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Edit Personal Data Accordion -->
+          <div class="accordion-item">
+            <h2 class="accordion-header">
+              <button class="accordion-button bg-info-subtle collapsed" type="button" data-bs-toggle="collapse"
+                data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                <strong>Edit Personal Data</strong>
+              </button>
+            </h2>
+            <div id="collapseTwo" class="accordion-collapse collapse" data-bs-parent="#accordionAccount">
+              <div class="accordion-body">
+                <form [formGroup]="editPersonalDataForm" (ngSubmit)="onSubmitPDF()">
+
+                  <!-- First Name -->
+                  <div class="mb-3">
+                    <label for="firstName" class="form-label">First Name</label>
+                    <input type="text" id="firstName" formControlName="firstName" class="form-control"
+                      placeholder="Enter First Name">
+                    <div
+                      *ngIf="editPersonalDataForm.get('firstName').invalid && (editPersonalDataForm.get('firstName').dirty || editPersonalDataForm.get('firstName').touched)"
+                      class="text-danger">
+                      <span *ngIf="editPersonalDataForm.get('firstName').errors?.required">First Name is
+                        required.</span>
+                      <span *ngIf="editPersonalDataForm.get('firstName').errors?.minlength">First Name must be at least
+                        2 characters long.</span>
+                    </div>
+                  </div>
+
+                  <!-- Last Name -->
+                  <div class="mb-3">
+                    <label for="lastName" class="form-label">Last Name</label>
+                    <input type="text" id="lastName" formControlName="lastName" class="form-control"
+                      placeholder="Enter Last Name">
+                    <div
+                      *ngIf="editPersonalDataForm.get('lastName').invalid && (editPersonalDataForm.get('lastName').dirty || editPersonalDataForm.get('lastName').touched)"
+                      class="text-danger">
+                      <span *ngIf="editPersonalDataForm.get('lastName').errors?.required">Last Name is required.</span>
+                      <span *ngIf="editPersonalDataForm.get('lastName').errors?.minlength">Last Name must be at least 2
+                        characters long.</span>
+                    </div>
+                  </div>
+
+                  <!-- Phone Number -->
+                  <div class="mb-3">
+                    <label for="phoneNumber" class="form-label">Phone Number</label>
+                    <input type="tel" id="phoneNumber" formControlName="phoneNumber" class="form-control"
+                      placeholder="Enter Phone Number">
+                    <div
+                      *ngIf="editPersonalDataForm.get('phoneNumber').invalid && (editPersonalDataForm.get('phoneNumber').dirty || editPersonalDataForm.get('phoneNumber').touched)"
+                      class="text-danger">
+                      <span *ngIf="editPersonalDataForm.get('phoneNumber').errors?.pattern">Phone Number must be
+                        valid.</span>
+                      <span *ngIf="editPersonalDataForm.get('phoneNumber').errors?.minlength">Phone Number must be at
+                        least 10 digits long.</span>
+                      <span *ngIf="editPersonalDataForm.get('phoneNumber').errors?.required">Phone Number is
+                        required.</span>
+                    </div>
+                  </div>
+
+                  <!-- Date of Birth -->
+                  <div class="mb-3">
+                    <label for="dateOfBirth" class="form-label">Date of Birth</label>
+                    <input type="date" id="dateOfBirth" formControlName="dateOfBirth" class="form-control"
+                      placeholder="Enter Date of Birth">
+                  </div>
+
+                  <!-- Address -->
+                  <div class="mb-3">
+                    <label for="address" class="form-label">Address</label>
+                    <input type="text" id="address" formControlName="address" class="form-control"
+                      placeholder="Enter Address">
+                    <div
+                      *ngIf="editPersonalDataForm.get('address').invalid && (editPersonalDataForm.get('address').dirty || editPersonalDataForm.get('address').touched)"
+                      class="text-danger">
+                      <span *ngIf="editPersonalDataForm.get('address').errors?.required">Address is required.</span>
+                    </div>
+                  </div>
+
+                  <!-- Save Changes button -->
+                  <div class="text-center">
+                    <button type="submit" class="btn btn-outline-dark btn-sm"
+                      [disabled]="editPersonalDataForm.invalid || editPersonalDataForm.pristine">Save Changes</button>
+                  </div>
+
+                </form>
+              </div>
+            </div>
+          </div>
+
+
+          <!-- Appointments List Accordion -->
+          <div class="accordion-item">
+            <h2 class="accordion-header">
+              <button class="accordion-button bg-info-subtle collapsed" type="button" data-bs-toggle="collapse"
+                data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+                <strong>Appointments</strong>
+              </button>
+            </h2>
+
+            <ng-template #noAppointments>
+              <div class="accordion-body text-center">
+                <div class="row">
+                  <div class="col">
+                    <h5>NO APPOINTMENTS for now...</h5>
+                  </div>
+                </div>
+              </div>
+            </ng-template>
+
+            <div id="collapseFour" class="accordion-collapse collapse" data-bs-parent="#accordionAccount"
+              *ngIf="appointmentsForm.get('appointmentsFA')?.controls.length > 0; else noAppointments">
+              <!-- <div id="collapseFour" class="accordion-collapse collapse" data-bs-parent="#accordionAccount"> -->
+              <div class="accordion-body">
+
+                <form [formGroup]="appointmentsForm">
+                  <div formArrayName="appointmentsFA">
+                    <div
+                      *ngFor="let appointmentGroup of appointmentsForm.get('appointmentsFA')?.controls; let i = index">
+                      <div [formGroupName]="i">
+                        <fieldset class="border border-dark p-4 mb-4 rounded">
+                          <legend class="text-dark">Appointment: #{{ appointmentGroup.get('appointmentId').value }}
+                          </legend>
+                          <div class="row mb-3">
+                            <div class="col">
+                              <p class="mb-0"><strong>Property Id </strong> {{
+                                appointmentGroup.get('propertyId').value }}</p>
+                              <p class="mb-0"><strong>Property Category </strong> {{
+                                appointmentGroup.get('propertyCategory').value }}</p>
+                              <p class="mb-0"><strong>Property Type </strong> {{
+                                appointmentGroup.get('transactionType').value }}</p>
+                              <p class="mb-0"><strong>Customer:</strong>
+                                #{{appointmentGroup.get('customerId').value }}
+                                {{appointmentGroup.get('customerFirstName').value }}
+                                {{appointmentGroup.get('customerLastName').value }}
+                              </p>
+                              M: {{appointmentGroup.get('customerPhoneNumber').value }}
+                              <p class="mb-0"><strong>Agent:</strong>
+                                #{{appointmentGroup.get('agentId').value }}
+                                {{appointmentGroup.get('agentFirstName').value }}
+                                {{appointmentGroup.get('agentLastName').value }}
+                              </p>
+                              M: {{appointmentGroup.get('agentPhoneNumber').value }}
+                              <p class="mb-0"><strong>Address:</strong>
+                                {{ appointmentGroup.get('country').value }},
+                                {{ appointmentGroup.get('city').value }}
+                              </p>
+                              <p class="mb-0"><strong>Start Bid:</strong>
+                                {{ appointmentGroup.get('price').value | currency}}
+                              </p>
+                            </div>
+                            <div class="col">
+                              <div
+                                *ngIf="user.role === 'AGENT' || (user.role === 'CUSTOMER' && appointmentGroup.get('approvalStatus').value === 'APPROVED')">
+                                <p class="mb-0"><strong>Date:</strong> {{ appointmentGroup.get('startDateTime').value }}
+                                </p>
+                              </div>
+                              <div
+                                *ngIf="(user.role === 'CUSTOMER' && appointmentGroup.get('approvalStatus').value !== 'APPROVED') || user.role === 'ADMIN'">
+                                <label for="startDateTime" class="form-label mb-0"><strong>Date:</strong></label>
+                                <input type="datetime-local" id="startDateTime" formControlName="startDateTime"
+                                  class="form-control">
+                              </div>
+                            </div>
+                          </div>
+                          <div class="row mb-3">
+                            <div class="col">
+                              <div *ngIf="user.role === 'CUSTOMER'">
+                                <p class="mb-0"><strong>Status:</strong> {{ appointmentGroup.get('approvalStatus').value
+                                  }}</p>
+                              </div>
+                              <div *ngIf="user.role === 'AGENT' || user.role === 'ADMIN'">
+                                <label for="approvalStatus" class="form-label mb-0"><strong>Status:</strong></label>
+                                <select formControlName="approvalStatus" class="form-select">
+                                  <option value="APPROVED">Approved</option>
+                                  <option value="PENDING">Pending</option>
+                                  <option value="REJECTED">Rejected</option>
+                                  <option value="EXPIRED">Expired</option>
+                                </select>
+                              </div>
+                            </div>
+                            <div class="col">
+                              <p class="mb-0"><strong>Created:</strong> {{ appointmentGroup.get('dateCreated').value |
+                                date }}</p>
+                            </div>
+                          </div>
+                          <div class="d-grid gap-2 d-md-flex justify-content-md-center">
+                            <button class="btn btn-outline-dark mx-md-2 mb-2" [disabled]="!isModified(i)"
+                              (click)="updateAppointment(i)">Update</button>
+                            <button class="btn btn-outline-danger mx-md-2 mb-2"
+                              (click)="deleteAppointment(i)">Delete</button>
+                          </div>
+                        </fieldset>
+                      </div>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,56 @@
+<div class="container">
+  <div class="row d-flex align-content-center justify-content-evenly mt-5">
+    <!-- <div class="card mb-5 col-12 col-md-8 mt-5"> -->
+    <div class="card d-flex flex-column mb-5 col-12 col-md-8 mt-5">
+      <div class="card-header msg_head">
+        <div class="d-flex bd-highlight">
+          <div class="img_cont">
+            <img [src]="recipient?.pictureUrl || '/user/user_icon.png'" class="rounded-circle user_img">
+          </div>
+          <div class="user_info">
+            <span>Chat with {{ recipient?.fullName }}</span>
+          </div>
+        </div>
+        <button id="close_menu_btn" class="btn btn-close btn-close-white" (click)="onClose(recipient)"></button>
+      </div>
+
+      <div class="card-body msg_card_body flex-grow-1" #scrollMe>
+        <div *ngFor="let message of chatMessages" [ngClass]="{
+            'd-flex flex-column align-items-start mt-3 mb-3': message.senderId !== senderId,
+            'd-flex flex-column align-items-end mt-3 mb-3': message.senderId === senderId
+          }">
+          <div class="img_cont_msg">
+            <img [src]="getPictureUrl(message.senderId)" class="rounded-circle user_img_msg">
+          </div>
+          <div [ngClass]="{
+              'msg_container': message.senderId !== senderId,
+              'msg_container_send': message.senderId === senderId
+            }">
+            {{ message.content }}
+            <span [ngClass]="{
+                'msg_time': message.senderId !== senderId,
+                'msg_time_send': message.senderId === senderId, 'mt-1': true
+              }">
+              {{ message.timestamp[2] }}.{{ message.timestamp[1] }}.{{ message.timestamp[0] }}   {{ message.timestamp[3] }}:{{ message.timestamp[4] }}
+            </span>
+          </div>
+        </div>
+        <div *ngIf="chatMessages.length === 0 && chatMessages" class="text-light text-center font-monospace">
+          <p>No messages in this chat room yet.</p>
+        </div>
+      </div>
+
+      <div class="card-footer">
+        <div class="input-group">
+          <textarea [(ngModel)]="newMessage" class="form-control type_msg text-light" (keyup.enter)="sendMessage()"
+            placeholder="Type your message..."></textarea>
+          <div class="input-group-append">
+            <span class="input-group-text send_btn" (click)="sendMessage()">
+              <i class="fas fa-location-arrow"></i>
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

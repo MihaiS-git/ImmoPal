@@ -1,0 +1,147 @@
+<div *ngIf="auctionRoom" class="container mb-5">
+  <div class="row justify-content-center">
+    <div class="col-sm-12 col-lg-6 p-1">
+      <div class="card" style="background-color: #2a5f73;">
+        <owl-carousel-o [options]="customOptions">
+          <ng-container *ngFor="let image of auctionRoom.property.propertyImages">
+            <ng-template carouselSlide>
+              <img class="d-block w-100 img-fluid custom-carousel-image" [src]="image.imageUrl"
+                [alt]="auctionRoom.property.propertyCategory" [title]="auctionRoom.property.propertyCategory">
+            </ng-template>
+          </ng-container>
+        </owl-carousel-o>
+      </div>
+
+      <div class="card mt-2 mb-1">
+        <div class="card-body" style="background-color: #2a5f73; color: white;">
+          <div class="d-flex justify-content-between align-items-center">
+            <h5 class="card-title m-0">{{ auctionRoom.property.propertyCategory }} for {{
+              auctionRoom.property.transactionType }}</h5>
+            <div id="agentTab" class="dropdown text-center">
+              <img [routerLink]="['/agencies', auctionRoom.agency.id, 'agents']" [src]="auctionRoom?.agent.pictureUrl"
+                alt="user icon" width="60" height="60" class="rounded-circle">
+            </div>
+          </div>
+          <hr>
+          <p class="card-text">{{ auctionRoom.property.propertyDetails.description }}</p>
+          <hr>
+          <p class="card-text">
+            {{ auctionRoom.property.address.streetNo }}, {{ auctionRoom.property.address.street }},
+            {{ auctionRoom.property.address.neighborhood }}, {{ auctionRoom.property.address.city }},
+            {{ auctionRoom.property.address.state }}, {{ auctionRoom.property.address.country }}
+          </p>
+          <hr>
+          <h5 class="card-text"><strong>Details</strong></h5>
+          <table class="table table-borderless mb-0">
+            <tbody>
+              <tr>
+                <th>Carpet area:</th>
+                <td>{{ auctionRoom.property.propertyDetails.carpetArea }} sqm</td>
+              </tr>
+              <tr>
+                <th>Built up area:</th>
+                <td>{{ auctionRoom.property.propertyDetails.builtUpArea }} sqm</td>
+              </tr>
+              <tr>
+                <th>Comfort type:</th>
+                <td>{{ auctionRoom.property.propertyDetails.comfortType }}</td>
+              </tr>
+              <tr>
+                <th>Floor:</th>
+                <td>{{ auctionRoom.property.propertyDetails.floor }}</td>
+              </tr>
+              <tr>
+                <th>Structure type:</th>
+                <td>{{ auctionRoom.property.propertyDetails.structureType }}</td>
+              </tr>
+              <tr>
+                <th>Year of construction:</th>
+                <td>{{ auctionRoom.property.propertyDetails.yearOfConstruction }}</td>
+              </tr>
+              <tr>
+                <th>Bath no:</th>
+                <td>{{ auctionRoom.property.propertyDetails.bathNo }}</td>
+              </tr>
+              <tr>
+                <th>Kitchen no:</th>
+                <td>{{ auctionRoom.property.propertyDetails.kitchenNo }}</td>
+              </tr>
+              <tr>
+                <th>Bedroom no:</th>
+                <td>{{ auctionRoom.property.propertyDetails.bedroomNo }}</td>
+              </tr>
+              <tr>
+                <th>Parking no:</th>
+                <td>{{ auctionRoom.property.propertyDetails.parkingNo }}</td>
+              </tr>
+              <tr>
+                <th>Balcony:</th>
+                <td>{{ auctionRoom.property.propertyDetails.balcony }}</td>
+              </tr>
+              <tr>
+                <th>Terrace:</th>
+                <td>{{ auctionRoom.property.propertyDetails.terrace }}</td>
+              </tr>
+              <tr>
+                <th>Swimming pool:</th>
+                <td>{{ auctionRoom.property.propertyDetails.swimmingPool }}</td>
+              </tr>
+              <tr>
+                <th>Energetic certificate:</th>
+                <td>{{ auctionRoom.property.propertyDetails.energeticCertificate }}</td>
+              </tr>
+            </tbody>
+          </table>
+          <hr>
+          <div class="row m-3">
+            <h5 class="card-text"><strong>Starting bid: </strong>{{ auctionRoom.property.price | currency }}</h5>
+          </div>
+          <div class="row m-3">
+            <h5 class="card-text"><strong>Current bid: </strong>{{ auctionRoom.maxBidAmount | currency }}</h5>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bids List -->
+      <div class="card">
+        <div class="card-body" style="background-color: #2a5f73; color: white;">
+          <h5 class="card-title">Last Bids</h5>
+          <ul class="list-group">
+            <li class="list-group-item" *ngFor="let bid of auctionRoom?.bids">
+              {{ bid.timestamp | date: 'MMMM d, y, h:mm a' }} | {{ bid.sender.firstName }} {{ bid.sender.lastName }}: {{
+              bid.amount | currency }}
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Bid Form -->
+      <div *ngIf="auctionRoom.auctionStatus == 'ACTIVE'" class="card mt-2">
+        <div class="card-body" style="background-color: #2a5f73; color: white;">
+          <h5 class="card-title">Place Your Bid</h5>
+          <form (ngSubmit)="placeBid()">
+            <div class="form-group">
+              <label for="bidAmount">Bid Amount</label>
+              <input type="number" class="form-control" id="bidAmount" [(ngModel)]="bidAmount" name="amount" required placeholder="Place your bid...">
+            </div>
+            <button type="submit" class="btn btn-outline-light mt-3">Submit Bid</button>
+          </form>
+        </div>
+      </div>
+
+      <!-- WINNER -->
+      <div *ngIf="auctionRoom.auctionStatus == 'CLOSED'" class="card">
+        <div class="card-body" style="background-color: #2a5f73; color: white;">
+          <h5 class="card-title">Winner</h5><hr>
+          <div class="text-center p-3 mx-auto m-3">
+            <p class="mx-auto my-auto" style="font-size: x-large;">{{auctionRoom.winner.firstName}}
+              {{auctionRoom.winner.lastName}}</p><hr>
+            <p class="mx-auto my-auto">{{auctionRoom.winningBid.amount | currency}}</p><hr>
+            <p class="mx-auto my-auto">{{auctionRoom.winningBid.timestamp | date: 'MMMM d, y, h:mm a' }}</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>

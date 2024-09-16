@@ -1,0 +1,40 @@
+<div class="container">
+  <div class="row justify-content-evenly" *ngIf="auctionRoomDtos.length > 0; else noAuctionRooms">
+    <div *ngFor="let roomEl of auctionRoomDtos" class="auction-room-card text-center mb-3"
+      (click)="onSelectRoom(roomEl)">
+      <div class="property-image-container">
+        <img [src]=" roomEl.property.propertyImages[0].imageUrl" alt="Property Image" class="property-image">
+      </div>
+      <div class="image-links">
+        <a [routerLink]="['/agencies', roomEl.agency.id]">
+          <img [src]="roomEl.agency.logoUrl" alt="Logo" class="rounded-circle agency-logo">
+        </a>
+        <a [routerLink]="['/agencies', roomEl.agency.id, 'agents']">
+          <img [src]="roomEl.agent.pictureUrl" alt="Agent Picture" class="rounded-circle agent-picture">
+        </a>
+      </div>
+      <div class="d-flex align-items-center mb-3">
+        <!-- Colored circle based on auction status -->
+        <div class="auction-status-circle" [ngClass]="{
+            'active': roomEl.auctionStatus === 'ACTIVE',
+            'inactive': roomEl.auctionStatus === 'INACTIVE',
+            'closed': roomEl.auctionStatus === 'CLOSED'
+          }"></div>
+        <h5 class="property-title">{{ roomEl.property.propertyCategory }} for {{ roomEl.property.transactionType }}
+        </h5>
+      </div>
+      <p class="property-description">{{ roomEl.property.propertyDetails.description }}</p>
+      <hr>
+      <p class="price"><strong>Starting price: </strong><br>{{ roomEl.property.price | currency }}</p>
+      <p class="start-date"><strong>Start Date: </strong><br> {{ roomEl.startDate | date: 'MMMM d, y, h:mm a'}}</p>
+      <p class="end-date"><strong>End Date: </strong><br>{{ roomEl.endDate | date: 'MMMM d, y, h:mm a'}}</p>
+    </div>
+  </div>
+
+  <ng-template #noAuctionRooms>
+    <div class="no-auctions-message">
+      <h3>No auction room available at the moment.</h3>
+    </div>
+  </ng-template>
+
+</div>

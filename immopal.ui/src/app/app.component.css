@@ -1,0 +1,13 @@
+.app-background {
+  background-image: url('/background/immopalbg.jpeg');
+  background-size: contain; /* Ensures the background image fits within the container without stretching */
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed; /* Keeps the background fixed while content scrolls */
+  background-color: #25414e;
+  min-height: 100vh; /* Allows the container to grow with the content */
+  width: 100vw;
+  overflow: auto; /* Allows scrolling */
+  display: flex;
+  flex-direction: column;
+}

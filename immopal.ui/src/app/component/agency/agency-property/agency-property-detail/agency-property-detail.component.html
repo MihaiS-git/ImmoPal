@@ -1,0 +1,10 @@
+<div class="card m-2 shadow-card" style="width: 18rem; min-height: 34rem;">
+    <img [src]="property.propertyImages[0].imageUrl" class="img-fluid rounded-start rounded-end object-fit-contain" alt="picture">
+    <div class="card-body text-center">
+      <h5 class="card-title">{{property.propertyCategory}} for {{property.transactionType}}</h5>
+      <p>{{ property.propertyDetails.description }}</p>
+      <h5 class="card-text">{{property.address.city}}, {{property.address.country}}</h5>
+      <hr>
+      <p class="card-text"><strong>{{property.price | currency}}</strong></p>
+    </div>
+</div>

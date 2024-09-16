@@ -1,0 +1,39 @@
+.container {
+  padding: 20px;
+}
+
+.card {
+  border: none;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 1);
+  background-color: #2a5f73;
+  color: #ffffff;
+}
+
+.owl-carousel .item img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.card-body {
+  padding: 20px;
+}
+
+.card-title {
+  font-size: 1.1rem;
+  margin-bottom: 10px;
+}
+
+
+.table-borderless th, .table-borderless td {
+  background-color: inherit;
+  color: inherit;
+}
+
+.dropdown-menu {
+  background-color: #b1dcf9;
+}
+
+.dropdown-toggle::after {
+  margin-left: .5em;
+}

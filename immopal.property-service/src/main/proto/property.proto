@@ -1,0 +1,118 @@
+syntax = "proto3";
+
+package ubb.graduation24.immopal.grpc;
+
+message Address {
+  optional int64 id = 1;
+  optional string country = 2;
+  optional string state = 3;
+  optional string city = 4;
+  optional string neighborhood = 5;
+  optional string street = 6;
+  optional string street_no = 7;
+  optional double latitude = 8;
+  optional double longitude = 9;
+}
+
+message PropertyDetails {
+  optional int64 id = 1;
+  optional string description = 2;
+  optional double carpet_area = 3;
+  optional double built_up_area = 4;
+  optional ComfortType comfort_type = 5;
+  optional string floor = 6;
+  optional StructureType structure_type = 7;
+  optional int32 year_of_construction = 8;
+  optional int32 bath_no = 9;
+  optional int32 kitchen_no = 10;
+  optional int32 bedroom_no = 11;
+  optional int32 parking_no = 12;
+  optional bool balcony = 13;
+  optional bool terrace = 14;
+  optional bool swimming_pool = 15;
+  optional EnergeticCertificate energetic_certificate = 16;
+}
+
+message PropertyImage {
+  optional int64 id = 1;
+  optional string image_url = 2;
+}
+
+message Property {
+  optional int64 id = 1;
+  optional TransactionType transaction_type = 2;
+  optional PropertyCategory property_category = 3;
+  optional Address address = 4;
+  optional PropertyDetails property_details = 5;
+  optional double price = 6;
+  optional int64 agent_id = 7;
+  repeated PropertyImage property_images = 8;
+}
+
+enum ComfortType {
+  LUXURIOUS = 0;
+  STANDARD = 1;
+  BASIC = 2;
+}
+
+enum StructureType {
+  REINFORCED_CONCRETE = 0;
+  STEEL = 1;
+  MASONRY = 2;
+  WOOD = 3;
+  COMPOSITE = 4;
+}
+
+enum EnergeticCertificate {
+  A = 0;
+  B = 1;
+  C = 2;
+  D = 3;
+  E = 4;
+  F = 5;
+}
+
+enum TransactionType {
+  SALE = 0;
+  RENT = 1;
+  AUCTION = 2;
+}
+
+enum PropertyCategory {
+  APARTMENT = 0;
+  STUDIO = 1;
+  VILLA = 2;
+  CHALET = 3;
+  COMMERCIAL = 4;
+  OFFICE = 5;
+  INDUSTRIAL = 6;
+}
+
+service PropertyServiceRPC {
+  rpc getAllProperties(GetPropertiesRequest) returns (GetPropertiesResponse);
+  rpc getAllPropertiesByAgentId(GetPropertiesByAgentIdRequest) returns (GetPropertiesByAgentIdResponse);
+  rpc getPropertyById(GetPropertyRequest) returns (GetPropertyResponse);
+}
+
+message GetPropertiesRequest {}
+
+message GetPropertiesResponse {
+  repeated Property property = 1;
+}
+
+message GetPropertiesByAgentIdRequest {
+  int64 agent_id = 1;
+}
+
+message GetPropertiesByAgentIdResponse {
+  repeated Property property = 1;
+}
+
+
+message GetPropertyRequest {
+  int64 propertyId = 1;
+}
+
+message GetPropertyResponse {
+  Property property = 1;
+}

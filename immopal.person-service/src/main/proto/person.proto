@@ -1,0 +1,65 @@
+syntax = "proto3";
+
+package ubb.graduation24.immopal.grpc;
+
+service PersonServiceRPC{
+  rpc getPersons(GetPersonsRequest) returns (GetPersonsResponse);
+  rpc getPerson(GetPersonRequest) returns (GetPersonResponse);
+  rpc addPerson(AddPersonRequest) returns (AddPersonResponse);
+  rpc updatePerson(UpdatePersonRequest) returns (UpdatePersonResponse);
+  rpc deletePersonById(DeletePersonRequest) returns (DeletePersonResponse);
+}
+
+message GetPersonsRequest {}
+
+message GetPersonsResponse {
+  repeated Person person = 1;
+}
+
+message GetPersonRequest {
+  int64 personId = 1;
+}
+
+message GetPersonResponse {
+  Person person = 1;
+}
+
+message AddPersonRequest {
+  Person person = 1;
+}
+
+message AddPersonResponse {
+  Person person = 1;
+}
+
+message UpdatePersonRequest {
+  int64 id = 1;
+  Person person = 2;
+}
+
+message UpdatePersonResponse {
+  Person person = 1;
+}
+
+message DeletePersonRequest {
+  int64 id = 1;
+}
+
+message DeletePersonResponse {
+  bool success = 1;
+  string message = 2;
+}
+
+message Person {
+  optional int64 id = 1;
+  optional string firstName = 2;
+  optional string lastName = 3;
+  optional string phoneNumber = 4;
+  optional string dateOfBirth = 5;
+  optional string address = 6;
+  optional string pictureUrl = 7;
+  optional int64 userId = 8;
+  repeated int64 propertyIds = 9;
+  repeated int64 appointmentIds = 10;
+  repeated string bidIds = 11;
+}

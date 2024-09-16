@@ -1,0 +1,30 @@
+<div class="container bg-info-subtle text-dark  text-center  mb-5 mt-5 p-4 rounded">
+  <div class="row">
+    <div class="col-md-4">
+      <img [src]="agency.logoUrl" class="img-fluid rounded-circle shadowIcon" alt="logo" height="220px" width="220px">
+    </div>
+    <div class="col-md-8">
+      <h1 class="card-title">{{agency.name}}</h1>
+      <hr>
+      <p class="card-text">{{agency.description}}</p>
+      <hr>
+      <div>
+        <p><strong>Phone: </strong>{{agency.phone}}</p>
+        <p><strong>E-mail:</strong> {{agency.email}}</p>
+        <p><strong>Address:</strong>
+          {{agency.address.streetNo}}, {{agency.address.street}},
+          {{agency.address.city}}, {{agency.address.country}}, {{agency.address.state}}
+        </p>
+      </div>
+    </div>
+  </div>
+  <hr>
+  <div class="row">
+    <div class="col btn-group-bg text-center">
+      <button class="btn mx-0 mx-3 my-2" (click)="navigateToAgents()">Agents</button>
+      <button class="btn mx-0 mx-3 my-2" (click)="navigateToProperties()">Properties</button>
+    </div>
+  </div>
+  <router-outlet></router-outlet>
+</div>
+

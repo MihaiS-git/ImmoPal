@@ -1,0 +1,13 @@
+<div class="card m-2 shadow-card" style="width: 18rem; min-height: 34rem;">
+  <a (click)="navigateToPropertyPage(property.id)" class="no-underline">
+    <img [src]="property.propertyImages[0]" class="img-fluid rounded-start rounded-end object-fit-contain"
+      alt="picture">
+    <div class="card-body text-center p-4">
+      <h5 class="card-title">{{property.propertyCategory}} for {{property.transactionType}}</h5>
+      <p>{{ property.propertyDetails.description }}</p>
+      <p class="card-text"><small class="text-body-secondary">
+          {{property.address.city}}, {{property.address.country}}</small></p>
+      <p class="card-text"><strong>{{property.price | currency}}</strong></p>
+    </div>
+  </a>
+</div>

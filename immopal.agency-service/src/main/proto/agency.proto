@@ -1,0 +1,76 @@
+syntax = "proto3";
+
+package ubb.graduation24.immopal.grpc;
+
+message Agency {
+  optional int64 id=1;
+  optional string name=2;
+  optional Address address=3;
+  optional string phone=4;
+  optional string email=5;
+  optional string description=6;
+  optional string logoUrl=7;
+  repeated AgencyAgent agents=8;
+  repeated AgencyProperty properties=9;
+}
+
+message AgencyAgent {
+  optional int64 id=1;
+  optional int64 agencyId=2;
+  optional int64 agentId=3;
+}
+
+message AgencyProperty {
+  optional int64 id=1;
+  optional int64 agencyId=2;
+  optional int64 propertyId=3;
+}
+
+message Address {
+  optional int64 id=1;
+  optional string country=2;
+  optional string state=3;
+  optional string city=4;
+  optional string neighborhood=5;
+  optional string street=6;
+  optional int64 streetNo=7;
+  optional double latitude=8;
+  optional double longitude=9;
+}
+
+service AgencyServiceRPC {
+  rpc getAllAgencies(GetAgenciesRequest) returns (GetAgenciesResponse);
+  rpc getAgencyById(GetAgencyRequest) returns (GetAgencyResponse);
+  rpc getAgencyByAgentId(GetAgencyByAgentIdRequest) returns (GetAgencyByAgentIdResponse);
+  rpc getAgencyByPropertyId(GetAgencyByPropertyIdRequest) returns (GetAgencyByPropertyIdResponse);
+}
+
+message GetAgenciesRequest {}
+
+message GetAgenciesResponse {
+  repeated Agency agency = 1;
+}
+
+message GetAgencyRequest {
+  int64 agencyId = 1;
+}
+
+message GetAgencyResponse {
+  Agency agency = 1;
+}
+
+message GetAgencyByAgentIdRequest {
+  int64 agentId = 1;
+}
+
+message GetAgencyByAgentIdResponse {
+  Agency agency = 1;
+}
+
+message GetAgencyByPropertyIdRequest {
+  int64 propertyId = 1;
+}
+
+message GetAgencyByPropertyIdResponse {
+  Agency agency = 1;
+}

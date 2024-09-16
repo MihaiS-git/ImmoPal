@@ -1,0 +1,381 @@
+services:
+  agency-service:
+    build:
+      context: ./immopal.agency-service
+      dockerfile: Dockerfile
+    ports:
+      - "9003:9003"
+      - "9053:9053"
+    depends_on:
+      - agency-db
+      - person-db
+      - person-service
+      - rabbitmq-service
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://agency-db:5432/agenciesdb
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=admin
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+      - AGENCY_SERVICE_HOST=agency-service
+      - AGENCY_SERVICE_PORT=9053
+      - SPRING_APPLICATION_NAME=agency-service
+      - SPRING_PROFILES_ACTIVE=secrets
+    networks:
+      - immopalnetwork
+
+  appointment-service:
+    build:
+      context: ./immopal.appointment-service
+      dockerfile: Dockerfile
+    ports:
+      - "9004:9004"
+    depends_on:
+      - agency-service
+      - person-service
+      - property-service
+      - appointment-db
+      - rabbitmq-service
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://appointment-db:5432/appointmentsdb
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=admin
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+      - RABBITMQ_HOST=rabbitmq-service
+      - RABBITMQ_PORT=5672
+      - RABBITMQ_USERNAME=guest
+      - RABBITMQ_PASSWORD=guest
+      - RABBITMQ_APPOINTMENT_DIRECT_EXCHANGE=appointment.direct.exchange
+      - RABBITMQ_PERSON_NEW_APPOINTMENT_ROUTINGKEY=person.new.appointment.routingkey
+      - RABBITMQ_PERSON_DELETE_APPOINTMENT_ROUTINGKEY=person.delete.appointment.routingkey
+      - SPRING_APPLICATION_NAME=appointment-service
+      - SPRING_PROFILES_ACTIVE=secrets
+    networks:
+      - immopalnetwork
+
+  auction-service:
+    build:
+      context: ./immopal.auction-service
+      dockerfile: Dockerfile
+    ports:
+      - "9006:9006"
+    depends_on:
+      - security-service
+      - person-service
+      - users-db
+      - person-db
+      - mongoauctionsdb
+      - mongo-express
+      - rabbitmq-service
+    environment:
+      - MONGODB_URI=mongodb://guest:guest@mongoauctionsdb:27017/auctionsdb?authSource=admin
+      - RABBITMQ_HOST=rabbitmq-service
+      - RABBITMQ_PORT=5672
+      - RABBITMQ_USERNAME=guest
+      - RABBITMQ_PASSWORD=guest
+      - RABBITMQ_WINNER_EXCHANGE=winner.topic.exchange
+      - RABBITMQ_PERSON_WINNER_ROUTINGKEY=person.winner.routingkey
+      - RABBITMQ_BID_EXCHANGE=bid.direct.exchange
+      - RABBITMQ_PERSON_BID_ROUTINGKEY=person.bid.routingkey
+      - RABBITMQ_REPLY_TIMEOUT=5000
+      - RABBITMQ_CONCURRENT_CONSUMERS=5
+      - RABBITMQ_MAX_CONCURRENT_CONSUMERS=10
+      - RABBITMQ_VIRTUALHOST=/
+      - SPRING_APPLICATION_NAME=auction-service
+      - SPRING_PROFILES_ACTIVE=docker
+    networks:
+      - immopalnetwork
+
+  email-service:
+    build:
+      context: ./immopal.email
+      dockerfile: Dockerfile
+    ports:
+      - "9007:9007"
+    depends_on:
+      - security-service
+      - rabbitmq-service
+      - mailhog
+    environment:
+      - HOST_NAME=mailhog
+      - HOST_PORT=1025
+      - RABBITMQ_HOST=rabbitmq-service
+      - RABBITMQ_PORT=5672
+      - RABBITMQ_USERNAME=guest
+      - RABBITMQ_PASSWORD=guest
+      - RABBITMQ_EXCHANGE=immopal.topic.security
+      - RABBITMQ_EMAIL_QUEUE=security.email.queue
+      - RABBITMQ_EMAIL_ROUTINGKEY=email.routingkey
+      - RABBITMQ_WINNER_EXCHANGE=winner.topic.exchange
+      - RABBITMQ_PERSON_WINNER_QUEUE=winner.email.queue
+      - RABBITMQ_PERSON_WINNER_ROUTINGKEY=person.winner.routingkey
+      - RABBITMQ_REPLY_TIMEOUT=5000
+      - RABBITMQ_CONCURRENT_CONSUMERS=5
+      - RABBITMQ_MAX_CONCURRENT_CONSUMERS=10
+      - RABBITMQ_VIRTUALHOST=/
+      - SPRING_APPLICATION_NAME=email-service
+    networks:
+      - immopalnetwork
+
+  person-service:
+    build:
+      context: ./immopal.person-service
+      dockerfile: Dockerfile
+    ports:
+      - "9001:9001"
+      - "9051:9051"
+    depends_on:
+      - person-db
+      - rabbitmq-service
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://person-db:5432/personsdb
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=admin
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+      - PERSON_SERVICE_HOST=person-service
+      - PERSON_SERVICE_PORT=9051
+      - RABBITMQ_HOST=rabbitmq-service
+      - RABBITMQ_PORT=5672
+      - RABBITMQ_USERNAME=guest
+      - RABBITMQ_PASSWORD=guest
+      - RABBITMQ_REPLY_TIMEOUT=5000
+      - RABBITMQ_CONCURRENT_CONSUMERS=5
+      - RABBITMQ_MAX_CONCURRENT_CONSUMERS=10
+      - RABBITMQ_VIRTUALHOST=/
+      - RABBITMQ_APPOINTMENT_DIRECT_EXCHANGE=appointment.direct.exchange
+      - RABBITMQ_BID_EXCHANGE=bid.direct.exchange
+      - RABBITMQ_PERSON_NEW_APPOINTMENT_ROUTINGKEY=person.new.appointment.routingkey
+      - RABBITMQ_PERSON_DELETE_APPOINTMENT_ROUTINGKEY=person.delete.appointment.routingkey
+      - RABBITMQ_PERSON_BID_ROUTINGKEY=person.bid.routingkey
+      - SPRING_PROFILES_ACTIVE=docker
+    networks:
+      - immopalnetwork
+
+  property-service:
+    build:
+      context: ./immopal.property-service
+      dockerfile: Dockerfile
+    ports:
+      - "9002:9002"
+      - "9052:9052"
+    depends_on:
+      - person-db
+      - rabbitmq-service
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://property-db:5432/propertiesdb
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=admin
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+      - PERSON_SERVICE_HOST=property-service
+      - PERSON_SERVICE_PORT=9052
+      - SPRING_APPLICATION_NAME=property-service
+      - SPRING_PROFILES_ACTIVE=secrets
+    networks:
+      - immopalnetwork
+
+  security-service:
+    build:
+      context: ./immopal.security-service
+      dockerfile: Dockerfile
+    ports:
+      - "9000:9000"
+    depends_on:
+      - person-service
+      - person-db
+      - users-db
+      - rabbitmq-service
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://users-db:5432/usersdb
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=admin
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+      - RABBITMQ_HOST=rabbitmq-service
+      - RABBITMQ_PORT=5672
+      - RABBITMQ_USERNAME=guest
+      - RABBITMQ_PASSWORD=guest
+      - RABBITMQ_EXCHANGE=immopal.topic.security
+      - RABBITMQ_EMAIL_ROUTINGKEY=email.routingkey
+      - SPRING_APPLICATION_NAME=security-service
+      - SPRING_PROFILES_ACTIVE=secrets
+      - PERSON_SERVICE_HOST=person-service
+      - PERSON_SERVICE_PORT=9051
+    networks:
+      - immopalnetwork
+
+  chat-service:
+    build:
+      context: ./immopal.chat-service
+      dockerfile: Dockerfile
+    ports:
+      - "9005:9005"
+    depends_on:
+      - security-service
+      - person-service
+      - users-db
+      - person-db
+      - mongochatsdb
+      - mongo-express
+      - rabbitmq-service
+    environment:
+      - MONGODB_URI=mongodb://guest:guest@chatsdb:27017/chatsdb?authSource=admin
+      - SPRING_APPLICATION_NAME=chat-service
+    networks:
+      - immopalnetwork
+
+  agency-db:
+    image: postgres:latest
+    environment:
+      POSTGRES_DB: agenciesdb
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: admin
+    ports:
+      - "5433:5432"
+    volumes:
+      - ./init/init_agency.sql:/docker-entrypoint-initdb.d/init_agency.sql
+    networks:
+      - immopalnetwork
+
+  appointment-db:
+    image: postgres:latest
+    environment:
+      POSTGRES_DB: appointmentsdb
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: admin
+    ports:
+      - "5434:5432"
+    volumes:
+      - ./init/init_appointment.sql:/docker-entrypoint-initdb.d/init_appointment.sql
+    networks:
+      - immopalnetwork
+
+  person-db:
+    image: postgres:latest
+    environment:
+      POSTGRES_DB: personsdb
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: admin
+    ports:
+      - "5435:5432"
+    volumes:
+      - ./init/init_person.sql:/docker-entrypoint-initdb.d/init_person.sql
+    networks:
+      - immopalnetwork
+
+  property-db:
+    image: postgres:latest
+    environment:
+      POSTGRES_DB: propertiesdb
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: admin
+    ports:
+      - "5436:5432"
+    volumes:
+      - ./init/init_property.sql:/docker-entrypoint-initdb.d/init_property.sql
+    networks:
+      - immopalnetwork
+
+  users-db:
+    image: postgres:latest
+    environment:
+      POSTGRES_DB: usersdb
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: admin
+    ports:
+      - "5437:5432"
+    volumes:
+      - ./init/init_users.sql:/docker-entrypoint-initdb.d/init_users.sql
+    networks:
+      - immopalnetwork
+
+  mongochatsdb:
+    image: mongo
+    restart: always
+    container_name: mongochatsdb
+    ports:
+      - "27019:27017"
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=guest
+      - MONGO_INITDB_ROOT_PASSWORD=guest
+      - MONGO_INITDB_DATABASE=chatsdb
+    command: mongod --auth
+    volumes:
+      - mongo-chatsdb-data:/data/db
+    networks:
+      - immopalnetwork
+
+  mongoauctionsdb:
+    image: mongo
+    restart: always
+    container_name: mongoauctionsdb
+    ports:
+      - "27018:27017"
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=guest
+      - MONGO_INITDB_ROOT_PASSWORD=guest
+      - MONGO_INITDB_DATABASE=auctionsdb
+    command: mongod --auth
+    volumes:
+      - mongo-auctionsdb-data:/data/db
+    networks:
+      - immopalnetwork
+
+  mongo-express:
+    image: mongo-express
+    restart: always
+    container_name: mongoexpress
+    ports:
+      - "8081:8081"
+    environment:
+      - ME_CONFIG_MONGODB_ADMINUSERNAME=guest
+      - ME_CONFIG_MONGODB_ADMINPASSWORD=guest
+      - ME_CONFIG_MONGODB_SERVER=mongochatsdb
+      - ME_CONFIG_MONGODB_PORT=27017
+    depends_on:
+      - mongochatsdb
+      - mongoauctionsdb
+    networks:
+      - immopalnetwork
+
+  mailhog:
+    image: mailhog/mailhog
+    container_name: 'mailhog'
+    ports:
+      - "1025:1025"
+      - "8025:8025"
+    networks:
+      - immopalnetwork
+
+  gateway-service:
+    build:
+      context: ./immopal.gateway
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_PROFILES_ACTIVE=secrets
+    depends_on:
+      - agency-service
+      - appointment-service
+      - person-service
+      - property-service
+      - security-service
+    networks:
+      - immopalnetwork
+
+  rabbitmq-service:
+    image: 'rabbitmq:3.13.3-management-alpine'
+    environment:
+      RABBITMQ_DEFAULT_PASS: guest
+      RABBITMQ_DEFAULT_USER: guest
+    ports:
+      - '5672:5672'
+      - '15672:15672'
+    networks:
+      - immopalnetwork
+
+volumes:
+  mongo-chatsdb-data: {}
+  mongo-auctionsdb-data: {}
+
+networks:
+  immopalnetwork:
+    driver: bridge

@@ -1,0 +1,70 @@
+<div class="container mt-navbar">
+  <div class="row justify-content-center mt-3 mx-auto">
+
+    <div class="dropdown d-flex align-items-center">
+      <div class="btn-group" role="group" aria-label="Sort by name">
+        <button type="button" class="btn btn-outline-secondary" (click)="sortByPriceAscending()">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="white" class="bi bi-sort-up"
+            viewBox="0 0 16 16">
+            <path
+              d="M3.5 12.5a.5.5 0 0 1-1 0V3.707L1.354 4.854a.5.5 0 1 1-.708-.708l2-1.999.007-.007a.498.498 0 0 1 .7.006l2 2a.5.5 0 1 1-.707.708L3.5 3.707V12.5zm3.5-9a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5zM7.5 6a.5.5 0 0 0 0 1h5a.5.5 0 0 0 0-1h-5zm0 3a.5.5 0 0 0 0 1h3a.5.5 0 0 0 0-1h-3zm0 3a.5.5 0 0 0 0 1h1a.5.5 0 0 0 0-1h-1z" />
+          </svg>
+        </button>
+        <button type="button" class="btn btn-outline-secondary" (click)="sortByPriceDescending()">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="white" class="bi bi-sort-down"
+            viewBox="0 0 16 16">
+            <path
+              d="M3.5 2.5a.5.5 0 0 0-1 0v8.793l-1.146-1.147a.5.5 0 0 0-.708.708l2 1.999.007.007a.497.497 0 0 0 .7-.006l2-2a.5.5 0 0 0-.707-.708L3.5 11.293V2.5zm3.5 1a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5zM7.5 6a.5.5 0 0 0 0 1h5a.5.5 0 0 0 0-1h-5zm0 3a.5.5 0 0 0 0 1h3a.5.5 0 0 0 0-1h-3zm0 3a.5.5 0 0 0 0 1h1a.5.5 0 0 0 0-1h-1z">
+            </path>
+          </svg>
+        </button>
+
+        <button class="btn btn-light dropdown-toggle" type="button" id="filterDropdown" data-bs-toggle="dropdown"
+          aria-expanded="false">
+          Filter by Category
+        </button>
+        <ul class="dropdown-menu" aria-labelledby="filterDropdown">
+          <li><a class="dropdown-item" (click)="filterByCategory('APARTMENT')">APARTMENT</a></li>
+          <li><a class="dropdown-item" (click)="filterByCategory('STUDIO')">STUDIO</a></li>
+          <li><a class="dropdown-item" (click)="filterByCategory('VILLA')">VILLA</a></li>
+          <li><a class="dropdown-item" (click)="filterByCategory('CHALET')">CHALET</a></li>
+          <li><a class="dropdown-item" (click)="filterByCategory('COMMERCIAL')">COMMERCIAL</a></li>
+          <li><a class="dropdown-item" (click)="filterByCategory('OFFICE')">OFFICE</a></li>
+          <li><a class="dropdown-item" (click)="filterByCategory('INDUSTRIAL')">INDUSTRIAL</a></li>
+          <li>
+            <hr class="dropdown-divider">
+          </li>
+          <li><a class="dropdown-item" (click)="clearFilters()">All</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="d-flex flex-wrap justify-content-center">
+      <div *ngIf="paginatedProperties.length === 0" class="no-properties-message">
+        <h3>No properties to display</h3>
+      </div>
+      <app-detail *ngFor="let propertyEl of paginatedProperties; let i = index" [property]="propertyEl"
+        [index]="i"></app-detail>
+    </div>
+  </div>
+
+  <div class="footer-pagination mb-5 d-flex justify-content-end">
+    <div class="my-pag mt-3">
+      <div>
+        <ngb-pagination [(page)]="thePageNumber" [pageSize]="thePageSize" [collectionSize]="filteredProperties.length"
+          [maxSize]="3" [boundaryLinks]="true" (pageChange)="applySortingAndPagination()">
+        </ngb-pagination>
+      </div>
+
+      <div class="d-flex ali">
+        <span class="my-page-size mx-2" style="color: white;">Page Size</span>
+        <select #myPageSelect (change)="updatePageSize(myPageSelect.value)">
+          <option [selected]="thePageSize === 8">8</option>
+          <option [selected]="thePageSize === 12">12</option>
+          <option [selected]="thePageSize === 24">24</option>
+          <option [selected]="thePageSize === 48">48</option>
+        </select>
+      </div>
+    </div>
+  </div>
+</div>

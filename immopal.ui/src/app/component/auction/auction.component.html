@@ -1,0 +1,29 @@
+<header class="header mt-5">
+  <div class="container-fluid align-items-center mt-5">
+    <div class="row justify-content-center mt-4 p-2" style="height: 100%;">
+      <ul class="nav nav-tabs col-lg-8 justify-content-center bg-info-subtle">
+        <li *ngIf="user.role==='ADMIN' || user.role=='AGENT'" class="nav-item mt-1">
+          <a class="nav-link" aria-current="page" routerLink="/auctions/new-room"
+            style="background-color: #2a5f73; color: white;">New Room</a>
+        </li>
+        <li class="nav-item mt-1">
+          <a class="nav-link" aria-current="page" routerLink="/auctions/rooms-list"
+            style="background-color: #2a5f73; color: white;">Rooms</a>
+        </li>
+        <li class="nav-item mt-1">
+          <a class="nav-link" aria-current="page" routerLink="/auctions/favourites"
+            style="background-color: #2a5f73; color: white;">Favourite Rooms</a>
+        </li>
+        <li class="nav-item mt-1">
+          <a class="nav-link" aria-current="page" routerLink="/auctions/closed"
+            style="background-color: #2a5f73; color: white;">Closed Rooms</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</header>
+<div class="container-fluid mt-4">
+  <div class="row">
+    <router-outlet></router-outlet>
+  </div>
+</div>

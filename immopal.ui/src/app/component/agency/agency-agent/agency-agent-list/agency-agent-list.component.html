@@ -1,0 +1,6 @@
+<div class="row justify-content-center mt-5 mx-auto">
+  <div class="col-lg-12 d-flex flex-wrap justify-content-center">
+    <app-agency-agent-detail *ngFor="let agentEl of agents; let i = index" [agent]="agentEl" [index]="i"
+      [routerLink]="[agentEl.id]" class="agent-detail-link"></app-agency-agent-detail>
+  </div>
+</div>

@@ -1,0 +1,21 @@
+<div class="container col-8 bg-info-subtle text-dark text-center mb-5 p-4 rounded">
+  <div class="col-12">
+    <h4>Create new Auction Room</h4>
+    <hr>
+    <form [formGroup]="newRoomForm" class="bg-info-subtle text-dark" (ngSubmit)="onSubmitForm()">
+      <div class="row justify-content-evenly">
+        <div class="col-8 col-md-4 mt-3">
+          <label for="propertyId" class="form-label"><strong>Property ID</strong></label>
+          <input type="number" id="propertyId" formControlName="propertyId" class="form-control">
+        </div>
+        <div class="col-8 col-md-4 mt-3">
+          <label for="startDate" class="form-label"><strong>Select start date</strong></label>
+          <input id="startDate" type="datetime-local" formControlName="startDate" class="form-control">
+        </div>
+        <div class="col-12 mt-3">
+          <button type="submit" class="btn btn-outline-dark">Create New Auction Room</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

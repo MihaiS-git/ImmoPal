@@ -1,0 +1,21 @@
+<div class="row justify-content-center mt-5 mb-5">
+  <div class="col-lg-8 mt-4 d-flex flex-wrap justify-content-center">
+    <div *ngFor="let agency of agencies; let i = index" class="card bg-info-subtle mb-3 p-2" style="max-width: 580px; min-height: 230px;">
+
+      <a [routerLink]="['/agencies', agency.id]" class="card-link" style="display: flex; align-items: center; height: 100%;">
+        <div class="row g-0">
+          <div class="col-md-4 d-flex align-items-center">
+            <img [src]="agency.logoUrl" class="img-fluid rounded-circle" alt="logo" style="max-width: 100%; height: auto;">
+          </div>
+          <div class="col-md-8">
+            <div class="card-body">
+              <h5 class="card-title">{{agency.name}}</h5>
+              <p class="card-text">{{agency.description}}</p>
+            </div>
+          </div>
+        </div>
+      </a>
+
+    </div>
+  </div>
+</div>

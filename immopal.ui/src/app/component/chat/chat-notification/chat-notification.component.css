@@ -1,0 +1,18 @@
+.notification-container {
+  position: fixed;
+  display: block;
+  top: 50px;
+  right: 50px;
+  z-index: 1000;
+}
+
+.notification {
+  background-color: #2a5f73;
+  color: #fff;
+  padding: 10px;
+  margin-bottom: 5px;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.5);
+  cursor: pointer;
+}
+

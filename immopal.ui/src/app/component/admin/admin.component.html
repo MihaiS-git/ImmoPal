@@ -1,0 +1,158 @@
+<div class="container mb-5">
+  <div class="row justify-content-center mt-4">
+    <div class="col col-md-8 mt-5 mb-3">
+      <div class="text-warning">
+        <div class="accordion" id="accordionExample">
+
+          <!-- Users Data Accordion -->
+          <div class="accordion-item">
+            <h2 class="accordion-header">
+              <button class="accordion-button bg-info-subtle collapsed" type="button" data-bs-toggle="collapse"
+                data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                Users List
+              </button>
+            </h2>
+            <div id="collapseOne" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+              <div class="accordion-body">
+
+                <form [formGroup]="editUserForm">
+                  <div formArrayName="usersFA">
+                    <div *ngFor="let userGroup of editUserForm.controls.usersFA['controls']; let i = index">
+
+                      <fieldset class="border-dark p-2 mb-3 rounded-2" style="border: 1px solid black;">
+                        <div [formGroupName]="i">
+
+                          <div class="mb-3">
+                            <p>User ID: {{userGroup.get('userId')?.value }} | Person ID: {{userGroup.get('personId')?.value }} | Email: {{userGroup.get('email')?.value }}</p>
+                          </div>
+
+                          <div class="input-group my-3">
+                            <span class="input-group-text fixed-width-span" id="role">Role</span>
+                            <select formControlName="role" class="form-select" aria-label="role select"
+                              aria-describedby="selectRole">
+                              <option value="ADMIN">ADMIN</option>
+                              <option value="AGENT">AGENT</option>
+                              <option value="CUSTOMER">CUSTOMER</option>
+                            </select>
+                          </div>
+
+                          <div class="input-group my-3">
+                            <span class="input-group-text fixed-width-span" id="accountNonExpired">Account Non Expired</span>
+                            <select formControlName="accountNonExpired" class="form-select"
+                              aria-label="accountNonExpired select" aria-describedby="selectAccountNonExpired" [disabled]="isDisabled">
+                              <option value="true">true</option>
+                              <option value="false">false</option>
+                            </select>
+                          </div>
+
+                          <div class="input-group my-3">
+                            <span class="input-group-text fixed-width-span" id="accountNonLocked">Account Non Locked</span>
+                            <select formControlName="accountNonLocked" class="form-select"
+                              aria-label="accountNonLocked select" aria-describedby="selectAccountNonLocked">
+                              <option value="true">true</option>
+                              <option value="false">false</option>
+                            </select>
+                          </div>
+
+                          <div class="input-group my-3">
+                            <span class="input-group-text fixed-width-span" id="credentialsNonExpired">Credentials Non Expired</span>
+                            <select formControlName="credentialsNonExpired" class="form-select"
+                              aria-label="credentialsNonExpired select" aria-describedby="credentialsNonExpired">
+                              <option value="true">true</option>
+                              <option value="false">false</option>
+                            </select>
+                          </div>
+
+                          <div class="input-group my-3">
+                            <span class="input-group-text fixed-width-span" id="enabled">Enabled</span>
+                            <select formControlName="enabled" class="form-select" aria-label="enabled select"
+                              aria-describedby="enabled">
+                              <option value="true">true</option>
+                              <option value="false">false</option>
+                            </select>
+                          </div>
+
+                          <div class="text-center">
+                            <button id="updateUser" class="btn btn-outline-dark btn-sm mx-2" (click)="updateUser(i)">Update</button>
+                            <button id="deleteUser" class="btn btn-outline-danger btn-sm mx-2" (click)="deleteUser(i)">Delete</button>
+                          </div>
+
+                        </div>
+                      </fieldset>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+
+          <!-- Person Data Accordion -->
+          <div class="accordion-item">
+            <h2 class="accordion-header">
+              <button class="accordion-button bg-info-subtle collapsed" type="button" data-bs-toggle="collapse"
+                data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                Persons List
+              </button>
+            </h2>
+            <div id="collapseTwo" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+              <div class="accordion-body">
+
+                <form [formGroup]="editPersonForm">
+                  <div formArrayName="personsFA">
+                    <div *ngFor="let personGroup of editPersonForm.controls.personsFA['controls']; let i = index">
+                      <fieldset class="border-dark p-2 mb-3 rounded-2" style="border: 1px solid black;">
+                        <div [formGroupName]="i">
+
+                          <div class="mb-3">
+                            <p>Person ID: {{ personGroup.get('personIdPF')?.value }} | User ID: {{ personGroup.get('userIdPF')?.value }}</p>
+                          </div>
+
+                          <div class="input-group mb-3">
+                            <span class="input-group-text fixed-width-span" id="firstName">First Name</span>
+                            <input type="text" id="firstName" formControlName="firstName" class="form-control"
+                              placeholder="firstName">
+                          </div>
+
+                          <div class="input-group mb-3">
+                            <span class="input-group-text fixed-width-span" id="lastName">Last Name</span>
+                            <input type="text" id="lastName" formControlName="lastName" class="form-control"
+                              placeholder="lastName">
+                          </div>
+
+                          <div class="input-group mb-3">
+                            <span class="input-group-text fixed-width-span" id="phoneNumber">Phone Number</span>
+                            <input type="text" id="phoneNumber" formControlName="phoneNumber" class="form-control"
+                              placeholder="phoneNumber">
+                          </div>
+
+                          <div class="input-group mb-3">
+                            <span class="input-group-text fixed-width-span" id="dateOfBirth">Date Of Birth</span>
+                            <input type="date" id="dateOfBirth" formControlName="dateOfBirth"
+                              class="form-control" aria-label="dateOfBirth" aria-describedby="dateOfBirth">
+                          </div>
+
+                          <div class="input-group mb-3">
+                            <span class="input-group-text fixed-width-span" id="address">Address</span>
+                            <input type="text" id="address" formControlName="address" class="form-control"
+                              placeholder="address">
+                          </div>
+
+                          <div class="text-center">
+                            <button id="updatePerson" class="btn btn-outline-dark btn-sm mx-2" (click)="updatePerson(i)">Update</button>
+                            <button id="deletePerson" class="btn btn-outline-danger btn-sm mx-2" (click)="deletePerson(i)">Delete</button>
+                          </div>
+
+                        </div>
+                      </fieldset>
+                    </div>
+                  </div>
+                </form>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
